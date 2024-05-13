@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz de Música</title>
+  <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+  <div class="quiz-container">
+    <div id="question-container">
+      <p id="question">Carregando pergunta...</p>
+    </div>
+    <div id="answer-buttons" class="btn-grid">
+      <button class="btn" onclick="selectAnswer(0)">Opção 1</button>
+      <button class="btn" onclick="selectAnswer(1)">Opção 2</button>
+      <button class="btn" onclick="selectAnswer(2)">Opção 3</button>
+      <button class="btn" onclick="selectAnswer(3)">Opção 4</button>
+    </div>
+    <button id="next-button" class="btn" onclick="nextQuestion()">Próxima</button>
+  </div>
+</body>
+</html>
+
+<script>
+const questionContainer = document.getElementById('question-container');
+const answerButtons = document.getElementById('answer-buttons');
+const nextButton = document.getElementById('next-button');
+
+let currentQuestionIndex = 0;
+
+const questions = [
+  {
+    question: "Qual banda lançou o álbum 'Dark Side of the Moon'?",
+    answers: [
+      { text: 'The Beatles', correct: false },
+      { text: 'Pink Floyd', correct: true },
+      { text: 'Led Zeppelin', correct: false },
+      { text: 'The Rolling Stones', correct: false }
+    ]
+  },
+  {
+    question: "Qual é o nome da cantora conhecida como 'Queen of Pop'?",
+    answers: [
+      { text: 'Beyoncé', correct: false },
+      { text: 'Madonna', correct: true },
+      { text: 'Taylor Swift', correct: false },
+      { text: 'Adele', correct: false }
+    ]
+  },
+  // Adicione mais perguntas aqui
+];
+
+function showQuestion(question) {
+  questionContainer.innerText = question.question;
+  answerButtons.innerHTML = '';
+  question.answers.forEach(answer => {
+    const button = document.createElement('button');
+    button.innerText = answer.text;
+    button.classList.add('btn');
+    button.addEventListener('click', () => selectAnswer(answer.correct));
+    answerButtons.appendChild(button);
+  });
+}
+
+function selectAnswer(correct) {
+  if (correct) {
+    alert('Resposta correta!');
+  } else {
+    alert('Resposta incorreta!');
+  }
+  nextButton.classList.remove('hide');
+}
+
+function nextQuestion() {
+  currentQuestionIndex++;
+  if (currentQuestionIndex < questions.length) {
+    showQuestion(questions[currentQuestionIndex]);
+    nextButton.classList.add('hide');
+  } else {
+    alert('Fim do Quiz!');
+    // Pode adicionar aqui alguma ação para mostrar resultados finais
+  }
+}
+
+showQuestion(questions[currentQuestionIndex]);
+
+</script>
