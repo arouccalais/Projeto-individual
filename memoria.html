@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Memória - Salmo 150</title>
+    <link rel="stylesheet" href="quiz.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cardArray = [
+                { name: 'violin', img: 'images/violin.png' },
+                { name: 'violin', img: 'images/violin.png' },
+                { name: 'guitar', img: 'images/guitar.png' },
+                { name: 'guitar', img: 'images/guitar.png' },
+                { name: 'drum', img: 'images/drum.png' },
+                { name: 'drum', img: 'images/drum.png' },
+                { name: 'piano', img: 'images/piano.png' },
+                { name: 'piano', img: 'images/piano.png' }
+            ];
+
+            cardArray.sort(() => 0.5 - Math.random());
+
+            const grid = document.querySelector('.memory-game');
+            let chosenCards = [];
+            let chosenCardsId = [];
+
+            function createBoard() {
+                cardArray.forEach((card, index) => {
+                    const cardElement = document.createElement('div');
+                    cardElement.setAttribute('data-id', index);
+                    cardElement.classList.add('memory-card');
+                    cardElement.addEventListener('click', flipCard);
+                    const cardImg = document.createElement('img');
+                    cardImg.setAttribute('src', card.img);
+                    cardElement.appendChild(cardImg);
+                    grid.appendChild(cardElement);
+                });
+            }
+
+            function checkForMatch() {
+                const cards = document.querySelectorAll('.memory-card');
+                const [firstId, secondId] = chosenCardsId;
+                if (chosenCards[0] === chosenCards[1]) {
+                    cards[firstId].removeEventListener('click', flipCard);
+                    cards[secondId].removeEventListener('click', flipCard);
+                } else {
+                    cards[firstId].classList.remove('flipped');
+                    cards[secondId].classList.remove('flipped');
+                }
+                chosenCards = [];
+                chosenCardsId = [];
+            }
+
+            function flipCard() {
+                const cardId = this.getAttribute('data-id');
+                chosenCards.push(cardArray[cardId].name);
+                chosenCardsId.push(cardId);
+                this.classList.add('flipped');
+                this.querySelector('img').style.display = 'block';
+                if (chosenCards.length === 2) {
+                    setTimeout(checkForMatch, 500);
+                }
+            }
+
+            createBoard();
+        });
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Projeto Salmo 150</h2>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="memoria.html">Jogo de Memória</a></li>
+                <li><a href="quiz.html">Quiz</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="main-content">
+        <header>
+            <h1>Jogo de Memória de Instrumentos</h1>
+        </header>
+        <main>
+            <div class="memory-game">
+                <!-- Cartas do jogo de memória serão geradas pelo JavaScript -->
+            </div>
+        </main>
+    </div>
+</body>
+</html>
